@@ -1,14 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors'); // Import CORS package
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Enable CORS for all requests
+app.use(cors());
+
+// Middleware for parsing JSON
 app.use(bodyParser.json());
 
-
 app.get('/', (req, res) => {
-    res.status(200).send('Welcome to the Bajaj Finserv Health Dev Challenge API! Use /bfhl for GET and POST requests.');
+    res.status(200).send('Use /bfhl for GET and POST requests.');
 });
 
 app.post('/bfhl', (req, res) => {
@@ -48,9 +52,20 @@ app.post('/bfhl', (req, res) => {
     }
 });
 
+// Handle OPTIONS preflight request
+app.options('/bfhl', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.status(200).end();
+});
 
 app.get('/bfhl', (req, res) => {
     res.status(200).json({ operation_code: 1 });
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
 
 module.exports = app;
