@@ -6,6 +6,11 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
+
+app.get('/', (req, res) => {
+    res.status(200).send('Welcome to the Bajaj Finserv Health Dev Challenge API! Use /bfhl for GET and POST requests.');
+});
+
 app.post('/bfhl', (req, res) => {
     try {
         const { data } = req.body;
